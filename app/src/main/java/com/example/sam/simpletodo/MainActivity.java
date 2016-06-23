@@ -1,6 +1,9 @@
 package com.example.sam.simpletodo;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,12 +18,14 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<String> items;
     ArrayAdapter<String> itemsAdapter;
     ListView lvItems;
     private final int REQUEST_CODE = 20;
+    private int cur_pos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +43,10 @@ public class MainActivity extends AppCompatActivity {
         String itemText = etNewItem.getText().toString();
         itemsAdapter.add(itemText);
         etNewItem.setText("");
-        writeItems();
+        //writeItems();
+        Item i = new Item(cur_pos++, itemText);
+        ItemDatabaseHelper databaseHelper = ItemDatabaseHelper.getInstance(this);
+        databaseHelper.addItem(i);
     }
 
     @Override
@@ -49,7 +57,10 @@ public class MainActivity extends AppCompatActivity {
             int editedPos = data.getExtras().getInt("pos", 0);
             items.set(editedPos, editedItem);
             itemsAdapter.notifyDataSetChanged();
-            writeItems();
+            //writeItems();
+            Item i = new Item(editedPos, editedItem);
+            ItemDatabaseHelper databaseHelper = ItemDatabaseHelper.getInstance(this);
+            databaseHelper.updateItemText(i);
         }
     }
 
@@ -82,24 +93,53 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-
     private void readItems(){
-        File fileDir = getFilesDir();
+        //File read
+
+        /* File fileDir = getFilesDir();
         File todoFile = new File(fileDir, "todo.txt");
         try{
             items = new ArrayList<String>(FileUtils.readLines(todoFile));
-        }catch(IOException e){
+        }catch(IOException e) {
             items = new ArrayList<String>();
+        }
+        */
+
+        //SQLite read
+        ItemDatabaseHelper databaseHelper = ItemDatabaseHelper.getInstance(this);
+        List<Item> items2 = databaseHelper.getAllItems();
+        items = new ArrayList<String>();
+        for (int i=0; i<items2.size(); ++i) {
+            //System.out.println(item2.pos + " " + item2.text);
+            Item item2 = items2.get(i);
+            items.add(i, item2.text);
+            cur_pos++;
         }
     }
 
     private void writeItems(){
-        File fileDir = getFilesDir();
+        //File write
+
+       /* File fileDir = getFilesDir();
         File todoFile = new File(fileDir, "todo.txt");
         try{
             FileUtils.writeLines(todoFile, items);
         }catch(IOException e){
             e.printStackTrace();
+        }*/
+
+        //SQListe write
+        cur_pos = 0;
+        ItemDatabaseHelper databaseHelper = ItemDatabaseHelper.getInstance(this);
+        databaseHelper.deleteAllItems();
+        Item temp = new Item(0, "");
+        for(int i=0; i< items.size(); ++i)
+        {
+            String text = items.get(i);
+            System.out.println(text);
+            temp.pos = cur_pos++;
+            temp.text = text;
+            databaseHelper.addItem(temp);
         }
     }
 }

@@ -17,12 +17,14 @@ The following **required** functionality is completed:
 The following **optional** features are implemented:
 
 * [x] Persist the todo items [into SQLite](http://guides.codepath.com/android/Persisting-Data-to-the-Device#sqlite) instead of a text file
+* [x] Improve style of the todo items in the list using a custom adapter
+* [x] Add support for completion due dates for todo items
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-[walkthrough](http://i.imgur.com/wzpZI8e.gifv)
+<img src='http://i.imgur.com/b2uQyng.gif?1' title='Video Walkthrough' width="300" alt='Video Walkthrough' />
 
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).

@@ -1,4 +1,4 @@
-package com.example.sam.simpletodo;
+package com.example.sam.simpletodo.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,8 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.sam.simpletodo.Model.Item;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 /**
  * Created by Sam on 6/22/16.
@@ -28,6 +31,8 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_ITEM_ID = "id";
     private static final String KEY_ITEM_POS = "pos";
     private static final String KEY_ITEM_TEXT = "text";
+    private static final String KEY_ITEM_DUEDATE = "dueDate";
+
 
     public static synchronized ItemDatabaseHelper getInstance(Context context) {
         // Use the application context, which will ensure that you
@@ -63,10 +68,11 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         String CREATE_ITEMS_TABLE = "CREATE TABLE " + TABLE_ITEMS +
                 "(" +
                 KEY_ITEM_ID + " INTEGER PRIMARY KEY," + // Define a primary key
-                KEY_ITEM_POS + " POS," +
-                KEY_ITEM_TEXT + " TEXT" +
-                ")";
-
+                KEY_ITEM_POS + " INTEGER," +
+                KEY_ITEM_TEXT + " TEXT," +
+                KEY_ITEM_DUEDATE + " INTEGER" +
+                 ")";
+        System.out.println("Create database table");
         db.execSQL(CREATE_ITEMS_TABLE);
     }
     // Called when the database needs to be upgraded.
@@ -77,6 +83,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         if (oldVersion != newVersion) {
             // Simplest implementation is to drop all old tables and recreate them
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS);
+            System.out.println("Update database table");
             onCreate(db);
         }
     }
@@ -96,6 +103,8 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(KEY_ITEM_POS, item.pos);
             values.put(KEY_ITEM_TEXT, item.text);
+            values.put(KEY_ITEM_DUEDATE, item.dueDate.getTime());
+
 
             // Notice how we haven't specified the primary key. SQLite auto increments the primary key column.
             db.insertOrThrow(TABLE_ITEMS, null, values);
@@ -123,7 +132,8 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     Item newItem = new Item(cursor.getInt(cursor.getColumnIndex(KEY_ITEM_POS)),
-                            cursor.getString(cursor.getColumnIndex(KEY_ITEM_TEXT)));
+                            cursor.getString(cursor.getColumnIndex(KEY_ITEM_TEXT)),
+                            new Date(cursor.getLong(cursor.getColumnIndex(KEY_ITEM_DUEDATE))));
                     items.add(newItem);
                 } while(cursor.moveToNext());
             }
@@ -143,6 +153,8 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_ITEM_TEXT, item.text);
+        values.put(KEY_ITEM_DUEDATE, item.dueDate.getTime());
+
 
         // Updating text for item with that text
         return db.update(TABLE_ITEMS, values, KEY_ITEM_POS + " = ?",
@@ -178,5 +190,6 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
             db.endTransaction();
         }
     }
+
 
 }

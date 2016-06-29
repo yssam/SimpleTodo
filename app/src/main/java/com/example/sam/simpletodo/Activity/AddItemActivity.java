@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.sam.simpletodo.R;
 
 import java.util.Calendar;
@@ -15,6 +17,7 @@ import java.util.Calendar;
 public class AddItemActivity extends AppCompatActivity {
     int pos;
     EditText mtItemEdit;
+    int priority = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,7 @@ public class AddItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_item);
         pos = getIntent().getIntExtra("pos", 0);
         mtItemEdit = (EditText)findViewById(R.id.mtNewItem);
+
 
     }
 
@@ -38,14 +42,33 @@ public class AddItemActivity extends AppCompatActivity {
         data.putExtra("text", editedItem);
         data.putExtra("pos", pos);
         data.putExtra("dueDate", calendar.getTime());
-        System.out.println("AddItemActivity "+editedItem+ " " + pos + " " + calendar.getTime());
+        data.putExtra("priority", priority);
+        System.out.println("priority="+priority);
+        //System.out.println("AddItemActivity "+editedItem+ " " + pos + " " + calendar.getTime());
         setResult(RESULT_OK, data);
         finish();
+    }
+    public void onPriorityClicked(View v){
+        // Is the button now checked?
+        boolean checked = ((RadioButton) v).isChecked();
+        System.out.println("checked="+checked);
+        switch(v.getId()){
+            case R.id.rbLow:
+                priority = 0;
+                break;
+            case R.id.rbMid:
+                priority = 1;
+                break;
+            case R.id.rbHigh:
+                priority = 2;
+                break;
+            default:
+                priority = 0;
+        }
     }
 
     public void onCancel(View v){
         setResult(RESULT_CANCELED);
         finish();
     }
-
 }

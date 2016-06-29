@@ -14,6 +14,14 @@ public class Item {
     public int priority;
     public String text;
 
+
+    public Item(int pos, String text, Date dueDate, int priority) {
+        this.pos = pos;
+        this.text = text;
+        this.dueDate = dueDate;
+        this.priority = priority;
+    }
+
     public Item(int pos, String text, Date dueDate) {
         this.pos = pos;
         this.text = text;

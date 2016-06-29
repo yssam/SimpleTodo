@@ -1,13 +1,16 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.sam.simpletodo.Activity.editNameFragment">
+<!-- fragment_edit_name.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/edit_name"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:layout_gravity="center" android:orientation="vertical"  >
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/lbl_your_name" android:text="Your name"
+        android:layout_width="wrap_content" android:layout_height="wrap_content" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/txt_your_name"
+        android:layout_width="match_parent"  android:layout_height="wrap_content"
+        android:inputType="text"
+        android:imeOptions="actionDone" />
+</LinearLayout>

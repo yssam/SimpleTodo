@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">SimpleTodo</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name = "add_item_title">Add Item</string>
+    <string name = "edit_item_title">Edit Item</string>
+    <string name = "edit_item_priority">Edit Priority</string>
+    <string name = "choose">Choose</string>
+    <string name = "OK">OK</string>
+    <string name = "cancel">Cancel</string>
 </resources>

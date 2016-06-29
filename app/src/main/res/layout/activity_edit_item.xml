@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.sam.simpletodo.EditItemActivity">
+    tools:context=".Activity.EditItemActivity">
 
     <Button
         android:layout_width="wrap_content"
@@ -15,9 +15,9 @@
         android:text="Save"
         android:id="@+id/btnSave"
         android:onClick="onEditItem"
-        android:layout_below="@+id/txEdit"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -25,18 +25,27 @@
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/txEdit"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:hint="Edit a new item here" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Edit item below:"
-        android:id="@+id/textView"
+        android:hint="Edit a new item name here"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/datePicker2"
+        android:layout_alignEnd="@+id/datePicker2" />
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/datePicker2"
+        android:layout_above="@+id/btnSave"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:id="@+id/btCancel"
+        android:onClick="onCancel"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/btnSave"
+        android:layout_toStartOf="@+id/btnSave" />
 </RelativeLayout>

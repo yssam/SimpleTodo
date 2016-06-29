@@ -32,6 +32,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_ITEM_POS = "pos";
     private static final String KEY_ITEM_TEXT = "text";
     private static final String KEY_ITEM_DUEDATE = "dueDate";
+    private static final String KEY_ITEM_PRIORITY = "priority";
 
 
     public static synchronized ItemDatabaseHelper getInstance(Context context) {
@@ -70,7 +71,8 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 KEY_ITEM_ID + " INTEGER PRIMARY KEY," + // Define a primary key
                 KEY_ITEM_POS + " INTEGER," +
                 KEY_ITEM_TEXT + " TEXT," +
-                KEY_ITEM_DUEDATE + " INTEGER" +
+                KEY_ITEM_DUEDATE + " INTEGER," +
+                KEY_ITEM_PRIORITY + " INTEGER" +
                  ")";
         System.out.println("Create database table");
         db.execSQL(CREATE_ITEMS_TABLE);
@@ -94,6 +96,8 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         // Create and/or open the database for writing
         SQLiteDatabase db = getWritableDatabase();
 
+        System.out.println("Database: pos="+item.pos+" text="+item.text+" priority="+item.priority);
+
         // It's a good idea to wrap our insert in a transaction. This helps with performance and ensures
         // consistency of the database.
         db.beginTransaction();
@@ -104,6 +108,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
             values.put(KEY_ITEM_POS, item.pos);
             values.put(KEY_ITEM_TEXT, item.text);
             values.put(KEY_ITEM_DUEDATE, item.dueDate.getTime());
+            values.put(KEY_ITEM_PRIORITY, item.priority);
 
 
             // Notice how we haven't specified the primary key. SQLite auto increments the primary key column.
@@ -133,7 +138,8 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 do {
                     Item newItem = new Item(cursor.getInt(cursor.getColumnIndex(KEY_ITEM_POS)),
                             cursor.getString(cursor.getColumnIndex(KEY_ITEM_TEXT)),
-                            new Date(cursor.getLong(cursor.getColumnIndex(KEY_ITEM_DUEDATE))));
+                            new Date(cursor.getLong(cursor.getColumnIndex(KEY_ITEM_DUEDATE))),
+                            cursor.getInt(cursor.getColumnIndex(KEY_ITEM_PRIORITY)));
                     items.add(newItem);
                 } while(cursor.moveToNext());
             }
@@ -147,13 +153,14 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    // Update the user's profile picture url
-    public int updateItemText(Item item) {
+
+    public int updateItem(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(KEY_ITEM_TEXT, item.text);
         values.put(KEY_ITEM_DUEDATE, item.dueDate.getTime());
+        values.put(KEY_ITEM_PRIORITY, item.priority);
 
 
         // Updating text for item with that text

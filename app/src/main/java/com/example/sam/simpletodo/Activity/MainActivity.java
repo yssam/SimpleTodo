@@ -33,11 +33,12 @@ public class MainActivity extends AppCompatActivity{
     ArrayList<Item> items;
     ArrayAdapter<Item> itemsAdapter;
     ListView lvItems;
-    public static final SimpleDateFormat SDF = new SimpleDateFormat("MM/dd/yyyy");
+    SimpleDateFormat SDF;
     int mode = 2;
     private final int REQUEST_CODE_ADD_ITEM = 20;
     private final int REQUEST_CODE_EDIT_ITEM = 21;
     private int cur_pos = 0;
+    
     private static final String TAG_CODE = "2431"; // DialogFragment Tag
 
     @Override
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity{
         //ItemDatabaseHelper databaseHelper = ItemDatabaseHelper.getInstance(this);
         //databaseHelper.onUpgrade(databaseHelper.getWritableDatabase(), 0, 1);
         readItems();
+        System.out.println("abcdefg");
+        SDF = new SimpleDateFormat("MM/dd/yyyy");
         itemsAdapter = new ItemsAdapter(this, items);
         lvItems.setAdapter(itemsAdapter);
         setupListVewListener();
@@ -170,6 +173,7 @@ public class MainActivity extends AppCompatActivity{
         final int tag_position = position;
         final Item item3 = items.get(position);
         final MaterialSimpleListAdapter adapter = new MaterialSimpleListAdapter(this);
+        final ItemDatabaseHelper databaseHelper = ItemDatabaseHelper.getInstance(this);
         String str_priority = "";
         switch(item3.priority){
             case 0:
@@ -217,7 +221,7 @@ public class MainActivity extends AppCompatActivity{
                                             items.get(tag_position).text =
                                                     input.toString(); // need to notify
                                             itemsAdapter.notifyDataSetChanged();
-                                            adapter.notifyDataSetChanged();
+                                            databaseHelper.updateItem(item3);
                                         }
                                     }).build();
 
@@ -236,8 +240,10 @@ public class MainActivity extends AppCompatActivity{
                             //Bundle args = new Bundle();
                             //args.putInt("position", tag_position);
                             //cdp.setArguments(args);
-                            items.get(tag_position).dueDate = cal.getTime();
+                            System.out.println("dueDate: " + item3.dueDate + " " + cal.getTime()+ " ");
+                            item3.dueDate = cal.getTime();
                             itemsAdapter.notifyDataSetChanged();
+                            databaseHelper.updateItem(item3);
                             cdp.show(getSupportFragmentManager(), TAG_CODE);
                         } else {
                             new MaterialDialog.Builder(MainActivity.this)
@@ -248,22 +254,22 @@ public class MainActivity extends AppCompatActivity{
                                         public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
 
                                             if(which == 0)
-                                                items.get(tag_position).priority = 0;
+                                                item3.priority = 0;
                                             else if(which == 1)
-                                                items.get(tag_position).priority = 1;
+                                                item3.priority = 1;
                                             else if(which == 2)
-                                                items.get(tag_position).priority = 2;
+                                                item3.priority = 2;
                                             itemsAdapter.notifyDataSetChanged();
+                                            databaseHelper.updateItem(item3);
                                             return true;
                                         }
                                     })
                                     .positiveText(R.string.choose)
                                     .negativeText(R.string.cancel)
                                     .show();
-                        }
-                    }//.dismiss();
+                        }dialog.dismiss();
+                    }
                 })
-                .positiveText(R.string.OK)
                 .negativeText(R.string.cancel)
                 .show();
 

@@ -20,7 +20,7 @@ public class EditItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_item);
+       /* setContentView(R.layout.activity_edit_item);
         String text = getIntent().getStringExtra("text");
         pos = getIntent().getIntExtra("pos", 0);
         date = (Date)getIntent().getSerializableExtra("dueDate");
@@ -37,11 +37,11 @@ public class EditItemActivity extends AppCompatActivity {
         }catch(Exception e){
             System.err.println("EditItemActivity onCreate Caught IOException: " + e.getMessage());
         }
-
+*/
     }
 
     public void onEditItem(View v){
-        String AddedItem = etText.getText().toString();
+  /*      String AddedItem = etText.getText().toString();
         final Calendar calendar = Calendar.getInstance();
         DatePicker dueDatePicker = (DatePicker)findViewById(R.id.datePicker2);
         calendar.set(dueDatePicker.getYear(),
@@ -53,6 +53,7 @@ public class EditItemActivity extends AppCompatActivity {
         data.putExtra("dueDate", calendar.getTime());
         setResult(RESULT_OK, data);
         finish();
+        */
     }
 
     public void onCancel(View v){

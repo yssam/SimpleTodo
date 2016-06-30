@@ -96,7 +96,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         // Create and/or open the database for writing
         SQLiteDatabase db = getWritableDatabase();
 
-        System.out.println("Database: pos="+item.pos+" text="+item.text+" priority="+item.priority);
+        //System.out.println("Database: pos="+item.pos+" text="+item.text+" priority="+item.priority);
 
         // It's a good idea to wrap our insert in a transaction. This helps with performance and ensures
         // consistency of the database.
@@ -189,6 +189,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
             db.delete(TABLE_ITEMS, KEY_ITEM_POS + " = ?",
                     new String [] {String.valueOf(pos)});
             db.setTransactionSuccessful();
+
         }
         catch(Exception e){
             Log.d(TAG, "Error while trying to delete an item");

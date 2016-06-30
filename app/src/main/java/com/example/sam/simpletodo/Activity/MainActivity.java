@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity{
         //ItemDatabaseHelper databaseHelper = ItemDatabaseHelper.getInstance(this);
         //databaseHelper.onUpgrade(databaseHelper.getWritableDatabase(), 0, 1);
         readItems();
-        System.out.println("abcdefg");
         SDF = new SimpleDateFormat("MM/dd/yyyy");
         itemsAdapter = new ItemsAdapter(this, items);
         lvItems.setAdapter(itemsAdapter);
@@ -94,6 +93,7 @@ public class MainActivity extends AppCompatActivity{
                        }
                        else if(mode == 2)
                        {
+                           System.out.println("showMaterialDialog pos="+pos);
                            showMaterialDialog(pos);
                        }
 
@@ -163,6 +163,7 @@ public class MainActivity extends AppCompatActivity{
             temp.pos = cur_pos++;
             temp.text = text;
             temp.dueDate = items.get(i).dueDate;
+            temp.priority = items.get(i).priority;
             databaseHelper.addItem(temp);
         }
     }
@@ -254,13 +255,14 @@ public class MainActivity extends AppCompatActivity{
                                         public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
 
                                             if(which == 0)
-                                                item3.priority = 0;
+                                                items.get(tag_position).priority = 0;
                                             else if(which == 1)
-                                                item3.priority = 1;
+                                                items.get(tag_position).priority = 1;
                                             else if(which == 2)
-                                                item3.priority = 2;
+                                                items.get(tag_position).priority = 2;
                                             itemsAdapter.notifyDataSetChanged();
-                                            databaseHelper.updateItem(item3);
+                                            System.out.println("updated item3 pos = " + tag_position + " priority = " + items.get(tag_position).priority);
+                                            databaseHelper.updateItem(items.get(tag_position));
                                             return true;
                                         }
                                     })

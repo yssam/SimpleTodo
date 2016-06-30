@@ -35,7 +35,7 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
         TextView tvItem = (TextView) convertView.findViewById(R.id.tvItem);
         TextView tvDueDate = (TextView) convertView.findViewById(R.id.tvDueDate);
         TextView tvPriority = (TextView) convertView.findViewById(R.id.tvPriority);
-        System.out.println("ItemsAdapter priority = "+item.priority);
+        //System.out.println("ItemsAdapter priority = "+item.priority);
 
         switch(item.priority){
             case 0:

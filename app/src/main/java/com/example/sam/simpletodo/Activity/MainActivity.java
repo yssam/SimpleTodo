@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements CalendarDatePickerDialogFragment.OnDateSetListener {
     ArrayList<Item> items;
     ArrayAdapter<Item> itemsAdapter;
     ListView lvItems;
@@ -234,13 +234,13 @@ public class MainActivity extends AppCompatActivity{
                             CalendarDatePickerDialogFragment cdp =
                                     new CalendarDatePickerDialogFragment()
                                             .setThemeCustom(R.style.DateTheme)
-                                            //.setOnDateSetListener(MainActivity.this)
+                                            .setOnDateSetListener(MainActivity.this)
                                             .setPreselectedDate(cal.get(Calendar.YEAR),
                                                     cal.get(Calendar.MONTH),
                                                     cal.get(Calendar.DATE));
-                            //Bundle args = new Bundle();
-                            //args.putInt("position", tag_position);
-                            //cdp.setArguments(args);
+                            Bundle args = new Bundle();
+                            args.putInt("position", tag_position);
+                            cdp.setArguments(args);
                             System.out.println("dueDate: " + item3.dueDate + " " + cal.getTime()+ " ");
                             item3.dueDate = cal.getTime();
                             itemsAdapter.notifyDataSetChanged();
@@ -274,14 +274,26 @@ public class MainActivity extends AppCompatActivity{
                 })
                 .negativeText(R.string.cancel)
                 .show();
+    }
+    @Override
+    public void onDateSet(CalendarDatePickerDialogFragment dialog,
+                          int year,
+                          int monthOfYear,
+                          int dayOfMonth) {
+        int position = dialog.getArguments().getInt("position", -1);
+        if (position != -1) {
+            // TODO: try other libraries instead of android-betterpickers
+            // there is a month bug over here
 
+            items.get(position).dueDate.setYear(year-1900);
+            items.get(position).dueDate.setMonth(monthOfYear);
+            items.get(position).dueDate.setDate(dayOfMonth);
 
+            itemsAdapter.notifyDataSetChanged();
+            ItemDatabaseHelper databaseHelper = ItemDatabaseHelper.getInstance(this);
+            databaseHelper.updateItem(items.get(position));
 
-
-
-
-
-
+        }
     }
 
 }
